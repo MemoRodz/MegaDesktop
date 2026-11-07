@@ -66,9 +66,12 @@ MegaDesktopApp/
 3.  **Instalar dependencias NuGet:** Abre la Consola del Administrador de paquetes NuGet (`Herramientas > Administrador de paquetes NuGet > Consola...`) y ejecuta:
     ```shell
     Install-Package MegaApiClient
+	Install-Package Newtonsoft.Json
     Install-Package System.Security.Cryptography.ProtectedData
     ```
 4.  **Compilar y Ejecutar:** Presiona `F5` o el botón de Inicio en Visual Studio.
+
+#### NOTA: Es posible que se deba actualizar "Newtonsoft.Json" y probablemente no sea necesario instalar "System.Security.Cryptography.ProtectedData" pues ya están includos en System. 
 
 ---
 
