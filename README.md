@@ -72,7 +72,9 @@ MegaDesktopApp/
 4.  **Compilar y Ejecutar:** Presiona `F5` o el botón de Inicio en Visual Studio.
 
 #### 📄 NOTA: 
-	Es posible que se deba actualizar "Newtonsoft.Json" y probablemente no sea necesario instalar "System.Security.Cryptography.ProtectedData" pues ya están includos en System. 
+	
+	Es posible que se deba actualizar "Newtonsoft.Json" y probablemente no sea necesario 
+	instalar "System.Security.Cryptography.ProtectedData" pues ya están includos en System. 
 
 ---
 
