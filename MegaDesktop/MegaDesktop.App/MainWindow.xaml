@@ -5,8 +5,154 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MegaDesktop.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Administrador Avanzado de MEGA" Height="550" Width="780" 
+        WindowStartupLocation="CenterScreen" Background="#F5F5F5">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <TabControl Grid.Row="0" Background="Transparent" BorderThickness="0">
+
+            <!-- PESTAÑA 1: EXPLORADOR DE ARCHIVOS -->
+            <TabItem Header=" Explorador de Archivos " Padding="12,6" FontWeight="SemiBold">
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Barra de Selección de Cuenta -->
+                    <Border Grid.Row="0" Background="White" Padding="15" CornerRadius="5" Margin="0,0,0,15">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="1" Opacity="0.1"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Seleccionar Cuenta:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="CboCuentas" Width="250" Height="28" VerticalContentAlignment="Center"
+                                  DisplayMemberPath="Email"/>
+
+                            <!-- Botón dinámico de Login (Visible por defecto) -->
+                            <Button x:Name="BtnLogin" Content="▶ Iniciar Sesión" Margin="15,0,0,0" Padding="15,0" Height="28"
+                                Background="#D81F26" Foreground="White" FontWeight="Bold" Click="BtnLogin_Click"/>
+
+                            <!-- Botón dinámico de Logout (Oculto por defecto) -->
+                            <Button x:Name="BtnLogout" Content="■ Cerrar Sesión" Margin="15,0,0,0" Padding="15,0" Height="28"
+                                Background="#666666" Foreground="White" FontWeight="Bold" Visibility="Collapsed" Click="BtnLogout_Click"/>
+
+                            <!-- NUEVO: Botón para volver atrás (Oculto al inicio) -->
+                            <Button x:Name="BtnVolver" Content="⬅ Regresar" Margin="15,0,0,0" Padding="10,0" Height="28" 
+                                    Background="#007ACC" Foreground="White" Visibility="Collapsed" Click="BtnVolver_Click"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tabla de Archivos -->
+                    <DataGrid x:Name="DgArchivos" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Background="White"
+                              MouseDoubleClick="DgArchivos_MouseDoubleClick">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="100"/>
+                            <DataGridTextColumn Header="Nombre del Archivo / Carpeta" Binding="{Binding Nombre}" Width="*"/>
+                            <DataGridTextColumn Header="Tamaño (MB)" Binding="{Binding TamanoMB, StringFormat={}{0:N2}}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- PESTAÑA 2: GESTIÓN DE CUENTAS (ABC) -->
+            <TabItem Header=" Configurar Cuentas " Padding="12,6" FontWeight="SemiBold">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Lista de Cuentas Guardadas -->
+                    <GroupBox Header="Cuentas Registradas" Margin="0,0,10,0" Padding="5">
+                        <ListBox x:Name="LstCuentasGestion" DisplayMemberPath="Email" 
+                             SelectionChanged="LstCuentasGestion_SelectionChanged"/>
+                    </GroupBox>
+
+                    <!-- Formulario de Operaciones (Agregar, Modificar, Borrar) -->
+                    <GroupBox Header="Detalles de la Cuenta" Grid.Column="1" Padding="10">
+                        <StackPanel>
+                            <Label Content="Correo Electrónico:"/>
+                            <TextBox x:Name="TxtGestionEmail" Height="26" Margin="0,0,0,10" VerticalContentAlignment="Center"/>
+
+                            <Label Content="Contraseña:"/>
+                            <TextBox x:Name="TxtGestionPassword" Height="26" Margin="0,0,0,20" VerticalContentAlignment="Center"/>
+
+                            <!-- Botonera -->
+                            <Button x:Name="BtnAgregar" Content="➕ Registrar Nueva" Height="30" Margin="0,0,0,8" 
+                                Background="#2E7D32" Foreground="White" Click="BtnAgregar_Click"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="BtnModificar" Content="✏️ Guardar Cambios" Grid.Column="0" Height="30" Margin="0,0,4,0" 
+                                    Background="#1565C0" Foreground="White" Click="BtnModificar_Click"/>
+                                <Button x:Name="BtnBorrar" Content="❌ Eliminar" Grid.Column="1" Height="30" Margin="4,0,0,0" 
+                                    Background="#C62828" Foreground="White" Click="BtnBorrar_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- PESTAÑA 3: CHEQUEO GLOBAL Y CUOTAS (NUEVA) -->
+            <TabItem Header=" Estado y Actividad Global " Padding="12,6" FontWeight="SemiBold">
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Panel de Control Superior -->
+                    <Border Grid.Row="0" Background="White" Padding="15" CornerRadius="5" Margin="0,0,0,10">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="Gray" ShadowDepth="1" Opacity="0.1"/>
+                        </Border.Effect>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,20,0" Foreground="#555555">
+                    <Run Text="💡 Mantenimiento de Cuentas Activas:" FontWeight="Bold" Foreground="#D81F26"/>
+                    <LineBreak/>
+                    Presiona el botón para iniciar un ciclo automático de Login/Logout en todas las cuentas de la lista. Esto actualizará su estado de actividad frente a MEGA y recopilará el estado de sus cuotas.
+                            </TextBlock>
+
+                            <Button x:Name="BtnProcesarTodo" Content="⚡ Mantener Cuentas Activas" Grid.Column="1" Padding="20,10" 
+                        Background="#2196F3" Foreground="White" FontWeight="Bold" Click="BtnProcesarTodo_Click"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Barra de Progreso del Proceso por Lote -->
+                    <ProgressBar x:Name="PrgGlobal" Grid.Row="1" Height="15" Margin="0,5,0,15" 
+                     Minimum="0" Maximum="100" Value="0" Foreground="#4CAF50" Visibility="Collapsed"/>
+
+                    <!-- Tabla Resumen Multicuenta -->
+                    <DataGrid x:Name="DgResumenGlobal" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Cuenta Correo" Binding="{Binding Email}" Width="2*"/>
+                            <DataGridTextColumn Header="Estado de Actividad" Binding="{Binding EstadoActividad}" Width="1.5*"/>
+                            <DataGridTextColumn Header="Archivos" Binding="{Binding TotalArchivos}" Width="80"/>
+                            <DataGridTextColumn Header="Espacio Usado / Total" Binding="{Binding Almacenamiento}" Width="1.5*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+        <!-- Barra de Estado Común -->
+        <StatusBar Grid.Row="1" Background="Transparent" Margin="0,10,0,0">
+            <TextBlock x:Name="TxtStatus" Text="Listo." Foreground="#555555"/>
+        </StatusBar>
     </Grid>
 </Window>
